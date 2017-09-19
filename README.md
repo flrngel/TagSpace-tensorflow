@@ -2,9 +2,9 @@
 
 Tensorflow implementation of Facebook **#TagSpace**
 
-You can read more about #TagSpace from (here)[https://research.fb.com/publications/tagspace-semantic-embeddings-from-hashtags/]
+You can read more about #TagSpace from [here](https://research.fb.com/publications/tagspace-semantic-embeddings-from-hashtags/)
 
-Special thanks to Facebook research team's (Starspace)[https://github.com/facebookresearch/Starspace] project, it was really good reference.
+Special thanks to Facebook research team's [Starspace](https://github.com/facebookresearch/Starspace) project, it was really good reference.
 
 ## Key Concept
 
@@ -12,7 +12,7 @@ Beside choosing 1000 random negative tag (for performance reason I guess), I cho
 
 ## Usage
 
-Download (ag news dataset)[https://github.com/mhjabreel/CharCNN/tree/master/data/ag_news_csv] as below
+Download [ag news dataset](https://github.com/mhjabreel/CharCNN/tree/master/data/ag_news_csv) as below
 
 ```
 $ tree ./data
