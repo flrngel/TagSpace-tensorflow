@@ -31,9 +31,14 @@ and then
 $ python model.py
 ```
 
+## Result
+
+Accuracy 0.89 (ag test data, compare 0.91 from StarSpace with same condition [5 epoch, 10 dim])
+
 ## To-do list
 
 - Clean up messy code
+- Better class structure
 - improve Tokenizer
 - support Stackoverflow dataset
 - improve performance
