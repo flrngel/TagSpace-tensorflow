@@ -28,7 +28,7 @@ $ tree ./data
 and then
 
 ```
-$ python model.py
+$ python train.py
 ```
 
 ## Result
