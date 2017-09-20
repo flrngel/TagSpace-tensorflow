@@ -40,7 +40,7 @@ Accuracy 0.89 (ag test data, compare 0.91 from StarSpace with same condition [5 
 - Clean up messy code
 - Better class structure
 - improve Tokenizer
-- support Stackoverflow dataset
+- support multiple dataset
 - improve performance
 - add Tensorboard metrics
 - add Korean
