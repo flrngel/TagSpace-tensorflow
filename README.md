@@ -8,7 +8,7 @@ Special thanks to Facebook research team's [Starspace](https://github.com/facebo
 
 ## Key Concept
 
-Beside choosing 1000 random negative tag (for performance reason I guess), I choosed worst positive tag, best negative tag.
+Beside choosing 1000 random negative tag (for performance reason I guess), I choosed worst positive tag, best negative tag. It's not good for performance but since we don't have much tags(labels) as Facebook, it seems okay.
 
 ## Usage
 
@@ -42,5 +42,6 @@ Accuracy 0.89 (ag test data, compare 0.91 from StarSpace with same condition [5 
 - improve Tokenizer
 - support multiple dataset
 - improve performance
+- adopt WARP sampling
 - add Tensorboard metrics
 - add Korean
