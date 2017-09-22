@@ -18,7 +18,7 @@ class TagSpace(object):
       doc_embed = tflearn.embedding(doc, input_dim=N, output_dim=d)
       self.lt_embed = lt_embed = tf.Variable(tf.random_normal([tN, d], stddev=0.1))
 
-      net = tflearn.conv_1d(doc_embed, K, H, activation='tanh')
+      net = tflearn.conv_1d(doc_embed, H, K, activation='tanh')
       net = tflearn.max_pool_1d(net, l)
       net = tflearn.tanh(net)
       self.logit = logit = tflearn.fully_connected(net, d, activation=None)
