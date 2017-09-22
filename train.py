@@ -5,8 +5,25 @@ import re
 from model import TagSpace
 from sklearn.utils import shuffle
 
-word_pad_length = 60
-tag_size = 5
+'''
+parse
+'''
+
+tf.app.flags.DEFINE_integer('num_epochs', 5, 'number of epochs to train')
+tf.app.flags.DEFINE_integer('batch_size', 20, 'batch size to train in one step')
+tf.app.flags.DEFINE_integer('labels', 5, 'number of label classes')
+tf.app.flags.DEFINE_integer('word_pad_length', 60, 'word pad length for training')
+tf.app.flags.DEFINE_float('learn_rate', 1e-2, 'learn rate for training optimization')
+tf.app.flags.DEFINE_float('shuffle', True, 'shuffle data FLAG')
+
+FLAGS = tf.app.flags.FLAGS
+
+num_epochs = FLAGS.num_epochs
+batch_size = FLAGS.batch_size
+tag_size = FLAGS.labels
+word_pad_length = FLAGS.word_pad_length
+lr = FLAGS.learn_rate
+lr_decr = (lr - (1e-9))/num_epochs
 
 TOKENIZER_RE = re.compile(r"[A-Z]{2,}(?![a-z])|[A-Z][a-z]+(?=[A-Z])|[\'\w\-]+", re.UNICODE)
 def token_parse(iterator):
@@ -31,19 +48,14 @@ with tf.Session() as sess:
   sess.run(tf.global_variables_initializer())
 
   words, tags = tflearn.data_utils.load_csv('./data/ag_news_csv/train.csv', target_column=0, columns_to_ignore=[1], has_header=False, categorical_labels=True, n_classes=tag_size)
-
-  words, tags = shuffle(words, tags)
+  if FLAGS.shuffle == True:
+    words, tags = shuffle(words, tags)
 
   words = string_parser(words, fit=True)
   word_input = tflearn.data_utils.pad_sequences(words, maxlen=word_pad_length)
-
-  num_epochs = 5
-  batch_size = 20
   total = len(word_input)
   step_print = int((total/batch_size) / 13)
   global_step = 0
-  lr = 1e-2
-  lr_decr = (lr - (1e-9))/num_epochs
 
   print('start training')
   for epoch_num in range(num_epochs):
