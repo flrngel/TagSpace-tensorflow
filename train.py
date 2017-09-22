@@ -51,7 +51,7 @@ with tf.Session() as sess:
     step_loss = 0
     for i in range(int(total/batch_size)):
       batch_input, batch_tags = (word_input[i*batch_size:(i+1)*batch_size], tags[i*batch_size:(i+1)*batch_size])
-      result = sess.run(train_opts, feed_dict={'TagSpace/doc:0': batch_input, 'TagSpace/tag_flag:0': batch_tags, 'TagSpace/lr:0': [lr]})
+      result = sess.run(train_opts, feed_dict={f'{model.__class__.__name__}/doc:0': batch_input, f'{model.__class__.__name__}/tag_flag:0': batch_tags, f'{model.__class__.__name__}/lr:0': [lr]})
       step_loss += result[1]
       epoch_loss += result[1]
       if i % step_print == 0:
@@ -69,7 +69,7 @@ with tf.Session() as sess:
 
   for i in range(int(total/batch_size)):
     batch_input, batch_tags = (word_input[i*batch_size:(i+1)*batch_size], tags[i*batch_size:(i+1)*batch_size])
-    result = sess.run(test_opts, feed_dict={'TagSpace/doc:0': batch_input, 'TagSpace/tag_flag:0': np.ones_like(batch_tags)})
+    result = sess.run(test_opts, feed_dict={f'{model.__class__.__name__}/doc:0': batch_input, f'{model.__class__.__name__}/tag_flag:0': np.ones_like(batch_tags)})
     arr = result[0]
     for j in range(len(batch_tags)):
       rs+=np.sum(np.argmax(arr[j]) == np.argmax(batch_tags[j]))
