@@ -14,7 +14,7 @@ tf.app.flags.DEFINE_integer('batch_size', 20, 'batch size to train in one step')
 tf.app.flags.DEFINE_integer('labels', 5, 'number of label classes')
 tf.app.flags.DEFINE_integer('word_pad_length', 60, 'word pad length for training')
 tf.app.flags.DEFINE_float('learn_rate', 1e-2, 'learn rate for training optimization')
-tf.app.flags.DEFINE_float('shuffle', True, 'shuffle data FLAG')
+tf.app.flags.DEFINE_boolean('shuffle', True, 'shuffle data FLAG')
 
 FLAGS = tf.app.flags.FLAGS
 
