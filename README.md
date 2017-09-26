@@ -1,6 +1,6 @@
 # TagSpace-tensorflow
 
-![model image of TagSpace](https://raw.githubusercontent.com/username/TagSpace-tensorflow/master/resources/tagspace-model.png)
+![model image of TagSpace](https://raw.githubusercontent.com/flrngel/TagSpace-tensorflow/master/resources/tagspace-model.png)
 
 Tensorflow implementation of Facebook **#TagSpace**
 
