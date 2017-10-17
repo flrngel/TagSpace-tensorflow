@@ -39,11 +39,7 @@ Accuracy 0.89 (ag test data, compare 0.91 from StarSpace with same condition [5 
 
 ## To-do list
 
-- Clean up messy code
-- Better class structure
-- improve Tokenizer
 - support multiple dataset
 - improve performance
-- adopt WARP sampling
+- adopt WARP sampling (now is just a WARP loss)
 - add Tensorboard metrics
-- add Korean
