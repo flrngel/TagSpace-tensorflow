@@ -46,9 +46,13 @@ class TagSpace(object):
       self.negative = negative = tf.reduce_max(f_negative[0], axis=1)
 
       self.f_loss = f_loss = tf.reduce_mean(tf.reduce_max([tf.reduce_min([tf.expand_dims(m - positive + negative,1), tf.expand_dims(tf.fill([tf.shape(doc)[0]], 10e7),1)], axis=0), tf.zeros([tf.shape(doc)[0], 1])], axis=0))
+      params = tf.trainable_variables()
 
       opt = tf.train.AdamOptimizer(learning_rate=lr[0])
-      self.op = opt.minimize(f_loss)
+      gradients = tf.gradients(f_loss, params)
+      clipped_gradients, _ = tf.clip_by_global_norm(gradients, 1.0)
+      self.op = opt.apply_gradients(zip(clipped_gradients, params))
+
 
   def train_opts(self):
     return [self.op, self.f_loss, self.logit, self.lt_embed, self.f_positive[0][0], self.f_negative[0][0]]
