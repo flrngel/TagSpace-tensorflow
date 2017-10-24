@@ -1,38 +1,45 @@
 import csv
 import numpy as np
 
-""" Most of codes are from from tflearn (https://github.com/tflearn/tflearn)
-"""
-
 class VocabDict(object):
   def __init__(self):
-    self.dict = {}
+    self.dict = {'<unk>': 0}
 
-  def add(self, word):
+  def fit(self, word):
     if word not in self.dict:
       self.dict[word] = len(self.dict)
-    return self.fit(word)
 
   def size(self):
     return len(self.dict)
 
-  def fit(self, word):
-    return self.dict[word]
+  def transform(self, word):
+    if word in self.dict:
+      return self.dict[word]
+    return 0
 
-target_dict = VocabDict()
+  def fit_and_transform(self, word):
+    self.fit(word)
+    return self.transform(word)
 
-def to_categorical(y):
+def to_categorical(y, target_dict, mode_transform=False):
   result = []
-  l = len(np.unique(y))
+  if mode_transform == False:
+    l = len(np.unique(y)) + 1
+  else:
+    l = target_dict.size()
+
   for i, d in enumerate(y):
     tmp = [0.] * l
     for _i, _d in enumerate(d):
-      tmp[target_dict.add(_d)] = 1.
+      if mode_transform == False:
+        tmp[target_dict.fit_and_transform(_d)] = 1.
+      else:
+        tmp[target_dict.transform(_d)] = 1.
     result.append(tmp)
   return result
 
 def load_csv(filepath, target_columns=-1, columns_to_ignore=None,
-    has_header=True, n_classes=None):
+    has_header=True, n_classes=None, target_dict=None, mode_transform=False):
 
   if isinstance(target_columns, list) and len(target_columns) < 1:
     raise Exception('target_columns must be list with one value at least')
@@ -50,5 +57,7 @@ def load_csv(filepath, target_columns=-1, columns_to_ignore=None,
       data.append([_d for _i, _d in enumerate(d) if _i not in target_columns and _i not in columns_to_ignore])
       target.append([_d for _i, _d in enumerate(d) if _i in target_columns])
 
-    target = to_categorical(target)
+    if target_dict is None:
+      target_dict = VocabDict()
+    target = to_categorical(target, target_dict=target_dict, mode_transform=mode_transform)
     return data, target

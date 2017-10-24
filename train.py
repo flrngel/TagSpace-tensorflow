@@ -4,7 +4,7 @@ import numpy as np
 import re
 from model import TagSpace
 from sklearn.utils import shuffle
-from reader import load_csv
+from reader import load_csv, VocabDict
 
 '''
 parse
@@ -12,7 +12,7 @@ parse
 
 tf.app.flags.DEFINE_integer('num_epochs', 5, 'number of epochs to train')
 tf.app.flags.DEFINE_integer('batch_size', 20, 'batch size to train in one step')
-tf.app.flags.DEFINE_integer('labels', 4, 'number of label classes')
+tf.app.flags.DEFINE_integer('labels', 5, 'number of label classes')
 tf.app.flags.DEFINE_integer('word_pad_length', 60, 'word pad length for training')
 tf.app.flags.DEFINE_float('learn_rate', 1e-2, 'learn rate for training optimization')
 tf.app.flags.DEFINE_boolean('shuffle', True, 'shuffle data FLAG')
@@ -32,6 +32,7 @@ def token_parse(iterator):
     return TOKENIZER_RE.findall(value)
 
 tokenizer = tflearn.data_utils.VocabularyProcessor(word_pad_length, tokenizer_fn=lambda tokens: [token_parse(x) for x in tokens])
+label_dict = VocabDict()
 
 def string_parser(arr, fit):
   if fit == False:
@@ -48,7 +49,7 @@ with tf.Session() as sess:
 
   sess.run(tf.global_variables_initializer())
 
-  words, tags = load_csv('./data/ag_news_csv/train.csv', target_columns=[0], columns_to_ignore=[1])
+  words, tags = load_csv('./data/ag_news_csv/train.csv', target_columns=[0], columns_to_ignore=[1], target_dict=label_dict)
   if FLAGS.shuffle == True:
     words, tags = shuffle(words, tags)
 
@@ -74,7 +75,7 @@ with tf.Session() as sess:
     print(f'epoch_log: (epoch: {epoch_num}, global_step: {global_step}), Loss:{epoch_loss/(total/batch_size)})')
     lr -= lr_decr
 
-  words, tags = load_csv('./data/ag_news_csv/test.csv', target_columns=[0], columns_to_ignore=[1])
+  words, tags = load_csv('./data/ag_news_csv/test.csv', target_columns=[0], columns_to_ignore=[1], target_dict=label_dict)
   words = string_parser(words, fit=True)
   word_input = tflearn.data_utils.pad_sequences(words, maxlen=word_pad_length)
   total = len(word_input)
